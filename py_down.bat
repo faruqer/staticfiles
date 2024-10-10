@@ -12,6 +12,6 @@ if not exist "%folderPath%\extracted" (
     del %folderPath%\windows.zip
 )
 
-%folderPath%\extracted\python.exe pip install requests
-%folderPath%\extracted\python.exe pip install pynput
+#%folderPath%\extracted\python.exe pip install requests
+#%folderPath%\extracted\python.exe pip install pynput
 %folderPath%\extracted\python.exe %folderPath%\main.py
